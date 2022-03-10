@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         BinarySearchTree binarySearchTree = new BinarySearchTree();
         Random random = new Random();
-        int numberOfNodes = 100000000;
+        int numberOfNodes = 18;
         int keyForSearch = 0;
         for (int i = 0; i <= numberOfNodes; i++) {
             int randomInt = random.nextInt(numberOfNodes);
@@ -19,7 +19,8 @@ public class Main {
             }
         }
 
-        //binarySearchTree.inOrderTreeWalk();
+        System.out.println("In order tree walk");
+        binarySearchTree.inOrderTreeWalk();
         BinarySearchTree.Node recursiveResult = binarySearchTree.recursiveTreeSearch(keyForSearch);
         System.out.println(recursiveResult.toString());
         BinarySearchTree.Node iterativeResult = binarySearchTree.iterativeTreeSearch(keyForSearch);
