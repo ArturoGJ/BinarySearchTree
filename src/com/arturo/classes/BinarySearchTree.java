@@ -7,15 +7,17 @@ package com.arturo.classes;
 public class BinarySearchTree {
     Node root;
 
-    public class Node {
+    public static class Node {
         private int key;
         private Node left;
         private Node right;
+        private Node top; // also known as p.
 
         public Node(int data) {
             key = data;
             left = null;
             right = null;
+            top = null;
         }
 
         public int getKey() {
@@ -38,12 +40,17 @@ public class BinarySearchTree {
             this.right = right;
         }
 
+        public Node getTop() { return top; }
+
+        public void setTop(Node top) { this.top = top; }
+
         @Override
         public String toString() {
             return "Node{" +
                     "key=" + key +
                     ", left=" + left +
                     ", right=" + right +
+                    ", top=" + top +
                     '}';
         }
     }
@@ -53,7 +60,7 @@ public class BinarySearchTree {
         this.root = null;
     }
 
-    public void insert(int key) {
+    public void recursiveInsert(int key) {
         root = recursiveInsert(root, key);
     }
 
@@ -75,6 +82,23 @@ public class BinarySearchTree {
         return root;
     }
 
+    public void iterativeInsert(int key) {
+        root = iterativeInsert(root, key);
+    }
+
+    private Node iterativeInsert(Node root, int key) {
+        Node tempNode = null;
+        while (root != null) {
+            tempNode = root;
+            if (key < root.key) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+        return null;
+    }
+
     public void inOrderTreeWalk() {
         inOrderTreeWalk(root);
     }
@@ -90,6 +114,7 @@ public class BinarySearchTree {
         }
     }
 
+    // Note: On most computers, the iterative version is more efficient.
     public Node recursiveTreeSearch(int key) {
         Node rootCopy = new Node(root.key);
         rootCopy.setLeft(root.left);
@@ -116,6 +141,7 @@ public class BinarySearchTree {
         }
     }
 
+    // Note: On most computers, the iterative version is more efficient.
     public Node iterativeTreeSearch(int key) {
         Node rootCopy = new Node(root.key);
         rootCopy.setLeft(root.left);
@@ -136,6 +162,67 @@ public class BinarySearchTree {
             }
         }
 
+        return root;
+    }
+
+    public Node getTreeMinimum() {
+        Node rootCopy = new Node(root.key);
+        rootCopy.setLeft(root.left);
+        rootCopy.setRight(root.right);
+        // We can always find an element in a binary search tree whose key is a minimum by following left child pointers
+        // from the root until we encounter a null O(h) where h is the height of the tree.
+        while (rootCopy.left != null) {
+            rootCopy = rootCopy.left;
+        }
+
+        return rootCopy;
+    }
+
+    public Node getTreeMinimumRecursive() {
+        Node rootCopy = new Node(root.key);
+        rootCopy.setLeft(root.left);
+        rootCopy.setRight(root.right);
+        rootCopy = getTreeMinimumRecursive(rootCopy);
+        return rootCopy;
+    }
+
+    private Node getTreeMinimumRecursive(Node root) {
+        if (root.left == null) {
+            return root;
+        } else {
+            root = getTreeMinimumRecursive(root.left);
+        }
+
+        return root;
+    }
+
+    public Node getTreeMaximum() {
+        Node rootCopy = new Node(root.key);
+        rootCopy.setLeft(root.left);
+        rootCopy.setRight(root.right);
+        // We can always find an element in a binary search tree whose key is a maximum by following right child pointers
+        // from the root until we encounter a null O(h) where h is the height of the tree.
+        while (rootCopy.right != null) {
+            rootCopy = rootCopy.right;
+        }
+
+        return rootCopy;
+    }
+
+    public Node getTreeMaximumRecursive() {
+        Node rootCopy = new Node(root.key);
+        rootCopy.setLeft(root.left);
+        rootCopy.setRight(root.right);
+        rootCopy = getTreeMaximumRecursive(rootCopy);
+        return rootCopy;
+    }
+
+    private Node getTreeMaximumRecursive(Node root) {
+        if (root.right == null) {
+            return root;
+        } else {
+            root = getTreeMaximumRecursive(root.right);
+        }
         return root;
     }
 }
